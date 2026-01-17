@@ -1,1 +1,297 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مرتب فرق تويتش</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-6">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="bg-gray-800 rounded-lg shadow-xl p-6 mb-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                    <h1 class="text-3xl font-bold text-white">مرتب فرق تويتش</h1>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <div id="connection-status" class="flex items-center gap-2 hidden">
+                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"></path>
+                        </svg>
+                        <span id="channel-name" class="text-green-400 font-semibold"></span>
+                        <button onclick="disconnect()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition">
+                            قطع الاتصال
+                        </button>
+                    </div>
+                    
+                    <button id="connect-btn" onclick="toggleSettings()" class="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        الاتصال بتويتش
+                    </button>
+                    
+                    <button onclick="clearAllTeams()" class="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        مسح الكل
+                    </button>
+                </div>
+            </div>
 
+            <!-- Connection Panel -->
+            <div id="settings-panel" class="mt-6 p-4 bg-gray-700 rounded-lg hidden">
+                <h3 class="text-white font-semibold mb-3">الاتصال بقناة تويتش</h3>
+                <div class="flex gap-3">
+                    <input
+                        type="text"
+                        id="channel-input"
+                        placeholder="أدخل اسم القناة"
+                        class="flex-1 px-4 py-2 bg-gray-800 text-white rounded-lg border border-gray-600 focus:border-purple-500 focus:outline-none"
+                        onkeypress="if(event.key === 'Enter') connect()"
+                    />
+                    <button
+                        onclick="connect()"
+                        class="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition font-semibold"
+                    >
+                        اتصال
+                    </button>
+                </div>
+                <p class="text-gray-400 text-sm mt-2">
+                    يمكن للمشاهدين الانضمام إلى الفرق بكتابة: !احمر، !ازرق، !اخضر، !اصفر، !بنفسجي، أو !برتقالي
+                </p>
+            </div>
+        </div>
+
+        <!-- Teams Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="teams-grid"></div>
+
+        <!-- Not Connected Message -->
+        <div id="not-connected" class="mt-6 text-center">
+            <div class="inline-flex items-center gap-2 px-6 py-3 bg-gray-800 rounded-lg">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3m8.293 8.293l1.414 1.414"></path>
+                </svg>
+                <span class="text-gray-400">غير متصل بتويتش</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const teams = {
+            red: [],
+            blue: [],
+            green: [],
+            yellow: [],
+            purple: [],
+            orange: []
+        };
+
+        const teamNames = {
+            red: 'أحمر',
+            blue: 'أزرق',
+            green: 'أخضر',
+            yellow: 'أصفر',
+            purple: 'بنفسجي',
+            orange: 'برتقالي'
+        };
+
+        const teamColors = {
+            red: 'bg-red-500',
+            blue: 'bg-blue-500',
+            green: 'bg-green-500',
+            yellow: 'bg-yellow-500',
+            purple: 'bg-purple-500',
+            orange: 'bg-orange-500'
+        };
+
+        const teamCommands = {
+            'احمر': 'red',
+            'ازرق': 'blue',
+            'اخضر': 'green',
+            'اصفر': 'yellow',
+            'بنفسجي': 'purple',
+            'برتقالي': 'orange'
+        };
+
+        let ws = null;
+        let currentChannel = '';
+
+        function toggleSettings() {
+            const panel = document.getElementById('settings-panel');
+            panel.classList.toggle('hidden');
+        }
+
+        function connect() {
+            const channelInput = document.getElementById('channel-input');
+            const channelName = channelInput.value.trim();
+            
+            if (!channelName) {
+                alert('الرجاء إدخال اسم القناة');
+                return;
+            }
+
+            if (ws) {
+                ws.close();
+            }
+
+            ws = new WebSocket('wss://irc-ws.chat.twitch.tv:443');
+            
+            ws.onopen = () => {
+                console.log('WebSocket connected');
+                ws.send('PASS oauth:justinfan12345\r\n');
+                ws.send('NICK justinfan12345\r\n');
+                ws.send('CAP REQ :twitch.tv/tags twitch.tv/commands\r\n');
+                ws.send(`JOIN #${channelName.toLowerCase()}\r\n`);
+            };
+
+            ws.onmessage = (event) => {
+                const message = event.data;
+                console.log('Received:', message);
+                
+                if (message.includes('PING')) {
+                    ws.send('PONG :tmi.twitch.tv\r\n');
+                    return;
+                }
+
+                if (message.includes('JOIN') || message.includes('353') || message.includes('366')) {
+                    currentChannel = channelName;
+                    document.getElementById('connection-status').classList.remove('hidden');
+                    document.getElementById('channel-name').textContent = '#' + channelName;
+                    document.getElementById('connect-btn').classList.add('hidden');
+                    document.getElementById('settings-panel').classList.add('hidden');
+                    document.getElementById('not-connected').classList.add('hidden');
+                }
+
+                if (message.includes('PRIVMSG')) {
+                    const userMatch = message.match(/display-name=([^;]+)/);
+                    const msgMatch = message.match(/PRIVMSG #\w+ :(.+)/);
+                    
+                    if (userMatch && msgMatch) {
+                        const username = userMatch[1];
+                        const msg = msgMatch[1].trim();
+                        
+                        console.log(`${username}: ${msg}`);
+                        
+                        Object.entries(teamCommands).forEach(([arabicCmd, color]) => {
+                            if (msg === `!${arabicCmd}`) {
+                                addToTeam(color, username);
+                            }
+                        });
+                    }
+                }
+            };
+
+            ws.onerror = (error) => {
+                console.error('WebSocket error:', error);
+                alert('خطأ في الاتصال بتويتش');
+            };
+
+            ws.onclose = () => {
+                console.log('WebSocket closed');
+                disconnect();
+            };
+        }
+
+        function disconnect() {
+            if (ws) {
+                ws.close();
+                ws = null;
+            }
+            currentChannel = '';
+            document.getElementById('connection-status').classList.add('hidden');
+            document.getElementById('connect-btn').classList.remove('hidden');
+            document.getElementById('not-connected').classList.remove('hidden');
+        }
+
+        function addToTeam(color, username) {
+            // Remove from all teams first
+            Object.keys(teams).forEach(team => {
+                teams[team] = teams[team].filter(user => user !== username);
+            });
+            
+            // Add to new team
+            if (!teams[color].includes(username)) {
+                teams[color].push(username);
+            }
+            
+            renderTeams();
+        }
+
+        function removeFromTeam(color, username) {
+            teams[color] = teams[color].filter(user => user !== username);
+            renderTeams();
+        }
+
+        function clearTeam(color) {
+            teams[color] = [];
+            renderTeams();
+        }
+
+        function clearAllTeams() {
+            Object.keys(teams).forEach(color => {
+                teams[color] = [];
+            });
+            renderTeams();
+        }
+
+        function renderTeams() {
+            const grid = document.getElementById('teams-grid');
+            grid.innerHTML = '';
+            
+            Object.entries(teams).forEach(([color, members]) => {
+                const teamDiv = document.createElement('div');
+                teamDiv.className = 'bg-gray-800 rounded-lg shadow-xl overflow-hidden';
+                
+                teamDiv.innerHTML = `
+                    <div class="${teamColors[color]} p-4 flex items-center justify-between">
+                        <h2 class="text-white text-xl font-bold flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                            فريق ${teamNames[color]} (${members.length})
+                        </h2>
+                        <button onclick="clearTeam('${color}')" class="p-2 hover:bg-white/20 rounded-lg transition" title="مسح الفريق">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="p-4 max-h-96 overflow-y-auto">
+                        ${members.length === 0 
+                            ? '<p class="text-gray-500 text-center py-8">لا يوجد أعضاء بعد</p>'
+                            : `<ul class="space-y-2">
+                                ${members.map(member => `
+                                    <li class="flex items-center justify-between bg-gray-700 px-3 py-2 rounded-lg group">
+                                        <span class="text-white font-medium">${member}</span>
+                                        <button onclick="removeFromTeam('${color}', '${member}')" class="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 transition">
+                                            ×
+                                        </button>
+                                    </li>
+                                `).join('')}
+                            </ul>`
+                        }
+                    </div>
+                `;
+                
+                grid.appendChild(teamDiv);
+            });
+        }
+
+        // Initialize
+        renderTeams();
+    </script>
+</body>
+</html>
