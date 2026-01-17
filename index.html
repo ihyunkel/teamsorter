@@ -15,7 +15,7 @@
     <div class="max-w-7xl mx-auto">
         <!-- Header -->
         <div class="bg-gray-800 rounded-lg shadow-xl p-6 mb-6">
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between flex-wrap gap-4">
                 <div class="flex items-center gap-3">
                     <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
@@ -23,7 +23,7 @@
                     <h1 class="text-3xl font-bold text-white">مرتب فرق تويتش</h1>
                 </div>
                 
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-4 flex-wrap">
                     <div id="connection-status" class="flex items-center gap-2 hidden">
                         <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"></path>
@@ -70,7 +70,63 @@
                     </button>
                 </div>
                 <p class="text-gray-400 text-sm mt-2">
-                    يمكن للمشاهدين الانضمام إلى الفرق بكتابة: !احمر، !ازرق، !اخضر، !اصفر، !بنفسجي، أو !برتقالي
+                    يمكن للمشاهدين الانضمام يدوياً: !احمر، !ازرق، !اخضر، !اصفر، !بنفسجي، !برتقالي
+                </p>
+                <p class="text-gray-400 text-sm">
+                    أو الدخول للقائمة: !دخول
+                </p>
+            </div>
+        </div>
+
+        <!-- Lobby and Distribution Controls -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <!-- Lobby List -->
+            <div class="lg:col-span-2 bg-gray-800 rounded-lg shadow-xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                        <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                        قائمة الانتظار (<span id="lobby-count">0</span>)
+                    </h2>
+                    <button onclick="clearLobby()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition">
+                        مسح القائمة
+                    </button>
+                </div>
+                <div id="lobby-list" class="max-h-96 overflow-y-auto">
+                    <p class="text-gray-500 text-center py-8">لا يوجد أحد في القائمة</p>
+                </div>
+            </div>
+
+            <!-- Distribution Controls -->
+            <div class="bg-gray-800 rounded-lg shadow-xl p-6">
+                <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                    <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                    </svg>
+                    إعدادات التوزيع
+                </h2>
+                
+                <div class="mb-4">
+                    <label class="text-white font-semibold mb-2 block">عدد الفرق:</label>
+                    <select id="team-count" onchange="updateTeamCount()" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-purple-500 focus:outline-none">
+                        <option value="2">فريقين</option>
+                        <option value="3">3 فرق</option>
+                        <option value="4">4 فرق</option>
+                        <option value="5">5 فرق</option>
+                        <option value="6" selected>6 فرق</option>
+                    </select>
+                </div>
+
+                <button onclick="randomDistribute()" class="w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg transition font-bold text-lg flex items-center justify-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                    توزيع عشوائي
+                </button>
+
+                <p class="text-gray-400 text-sm mt-3 text-center">
+                    سيتم توزيع جميع الأشخاص في القائمة بشكل عشوائي ومتساوي
                 </p>
             </div>
         </div>
@@ -90,6 +146,10 @@
     </div>
 
     <script>
+        const allTeamColors = ['red', 'blue', 'green', 'yellow', 'purple', 'orange'];
+        let activeTeamCount = 6;
+        let activeTeams = [...allTeamColors];
+        
         const teams = {
             red: [],
             blue: [],
@@ -98,6 +158,8 @@
             purple: [],
             orange: []
         };
+
+        let lobby = [];
 
         const teamNames = {
             red: 'أحمر',
@@ -132,6 +194,13 @@
         function toggleSettings() {
             const panel = document.getElementById('settings-panel');
             panel.classList.toggle('hidden');
+        }
+
+        function updateTeamCount() {
+            const select = document.getElementById('team-count');
+            activeTeamCount = parseInt(select.value);
+            activeTeams = allTeamColors.slice(0, activeTeamCount);
+            renderTeams();
         }
 
         function connect() {
@@ -185,6 +254,12 @@
                         
                         console.log(`${username}: ${msg}`);
                         
+                        // Check for lobby join command
+                        if (msg === '!دخول') {
+                            addToLobby(username);
+                        }
+                        
+                        // Check for team commands
                         Object.entries(teamCommands).forEach(([arabicCmd, color]) => {
                             if (msg === `!${arabicCmd}`) {
                                 addToTeam(color, username);
@@ -216,7 +291,83 @@
             document.getElementById('not-connected').classList.remove('hidden');
         }
 
+        function addToLobby(username) {
+            if (!lobby.includes(username)) {
+                lobby.push(username);
+                renderLobby();
+            }
+        }
+
+        function removeFromLobby(username) {
+            lobby = lobby.filter(user => user !== username);
+            renderLobby();
+        }
+
+        function clearLobby() {
+            lobby = [];
+            renderLobby();
+        }
+
+        function renderLobby() {
+            const lobbyList = document.getElementById('lobby-list');
+            const lobbyCount = document.getElementById('lobby-count');
+            
+            lobbyCount.textContent = lobby.length;
+            
+            if (lobby.length === 0) {
+                lobbyList.innerHTML = '<p class="text-gray-500 text-center py-8">لا يوجد أحد في القائمة</p>';
+            } else {
+                lobbyList.innerHTML = `
+                    <ul class="space-y-2">
+                        ${lobby.map((member, idx) => `
+                            <li class="flex items-center justify-between bg-gray-700 px-4 py-3 rounded-lg group">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-gray-400 font-mono">#${idx + 1}</span>
+                                    <span class="text-white font-medium">${member}</span>
+                                </div>
+                                <button onclick="removeFromLobby('${member}')" class="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 transition text-xl">
+                                    ×
+                                </button>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+            }
+        }
+
+        function randomDistribute() {
+            if (lobby.length === 0) {
+                alert('القائمة فارغة! اطلب من المشاهدين كتابة !دخول');
+                return;
+            }
+
+            // Clear all teams first
+            activeTeams.forEach(color => {
+                teams[color] = [];
+            });
+
+            // Shuffle lobby
+            const shuffled = [...lobby].sort(() => Math.random() - 0.5);
+            
+            // Distribute evenly
+            shuffled.forEach((player, idx) => {
+                const teamIndex = idx % activeTeamCount;
+                const teamColor = activeTeams[teamIndex];
+                teams[teamColor].push(player);
+            });
+
+            // Clear lobby after distribution
+            lobby = [];
+            
+            renderTeams();
+            renderLobby();
+        }
+
         function addToTeam(color, username) {
+            // Remove from lobby if exists
+            lobby = lobby.filter(user => user !== username);
+            renderLobby();
+            
             // Remove from all teams first
             Object.keys(teams).forEach(team => {
                 teams[team] = teams[team].filter(user => user !== username);
@@ -251,7 +402,8 @@
             const grid = document.getElementById('teams-grid');
             grid.innerHTML = '';
             
-            Object.entries(teams).forEach(([color, members]) => {
+            activeTeams.forEach(color => {
+                const members = teams[color];
                 const teamDiv = document.createElement('div');
                 teamDiv.className = 'bg-gray-800 rounded-lg shadow-xl overflow-hidden';
                 
@@ -292,6 +444,7 @@
 
         // Initialize
         renderTeams();
+        renderLobby();
     </script>
 </body>
 </html>
