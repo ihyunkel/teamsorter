@@ -341,19 +341,22 @@
                 return;
             }
 
-            // Clear all teams first
-            activeTeams.forEach(color => {
-                teams[color] = [];
-            });
-
-            // Shuffle lobby
+            // Shuffle lobby only (don't touch existing teams)
             const shuffled = [...lobby].sort(() => Math.random() - 0.5);
             
-            // Distribute evenly
-            shuffled.forEach((player, idx) => {
-                const teamIndex = idx % activeTeamCount;
-                const teamColor = activeTeams[teamIndex];
-                teams[teamColor].push(player);
+            // Count current team sizes to distribute evenly
+            const teamSizes = activeTeams.map(color => teams[color].length);
+            
+            // Distribute lobby members to balance teams
+            shuffled.forEach((player) => {
+                // Find team with smallest size
+                let minSize = Math.min(...teamSizes);
+                let targetTeamIndex = teamSizes.indexOf(minSize);
+                let targetTeam = activeTeams[targetTeamIndex];
+                
+                // Add player to that team
+                teams[targetTeam].push(player);
+                teamSizes[targetTeamIndex]++;
             });
 
             // Clear lobby after distribution
