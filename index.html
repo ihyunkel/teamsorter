@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مرتب فرق تويتش</title>
+    <title>توزيع الفرق</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* ============================================
            الخلفية المتحركة - Dark Mode Cyberpunk
            ============================================ */
-        /* المتغيرات (Colors) */
         :root {
             --bg-darker: #0a0e27;
             --primary-color: #00D9FF;
@@ -21,9 +20,11 @@
             background: var(--bg-darker);
             position: relative;
             overflow-x: hidden;
+            margin: 0;
+            padding: 0;
         }
         
-        /* الخلفية المتحركة */
+        /* الخلفية المتحركة - طبقة النقاط */
         body::before {
             content: '';
             position: fixed;
@@ -32,22 +33,47 @@
             right: 0;
             bottom: 0;
             background-image: 
-                radial-gradient(circle at 20% 50%, var(--primary-color) 1px, transparent 1px),
-                radial-gradient(circle at 60% 70%, var(--secondary-color) 1px, transparent 1px),
-                radial-gradient(circle at 80% 20%, var(--primary-color) 1px, transparent 1px),
-                linear-gradient(45deg, rgba(0, 217, 255, 0.02) 25%, transparent 25%),
-                linear-gradient(-45deg, rgba(255, 0, 110, 0.02) 25%, transparent 25%);
+                radial-gradient(circle at 20% 50%, var(--primary-color) 2px, transparent 2px),
+                radial-gradient(circle at 60% 70%, var(--secondary-color) 2px, transparent 2px),
+                radial-gradient(circle at 80% 20%, var(--primary-color) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 40% 90%, var(--secondary-color) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 10% 10%, var(--primary-color) 1px, transparent 1px),
+                radial-gradient(circle at 90% 60%, var(--secondary-color) 1px, transparent 1px);
             background-size: 
-                50px 80px,
-                50px 80px,
-                50px 80px,
-                50px 50px,
-                50px 50px;
-            background-position: 0 0, 25px 40px, 12px 20px, 0 0, 25px 25px;
-            opacity: 0.03;
+                80px 120px,
+                80px 120px,
+                100px 150px,
+                100px 150px,
+                60px 90px,
+                60px 90px;
+            background-position: 0 0, 40px 60px, 20px 30px, 60px 90px, 10px 15px, 50px 75px;
+            opacity: 0.15;
             z-index: 0;
             pointer-events: none;
             animation: backgroundMove 20s linear infinite;
+        }
+        
+        /* طبقة الخطوط القطرية */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(45deg, transparent 48%, rgba(0, 217, 255, 0.03) 49%, rgba(0, 217, 255, 0.03) 51%, transparent 52%),
+                linear-gradient(-45deg, transparent 48%, rgba(255, 0, 110, 0.03) 49%, rgba(255, 0, 110, 0.03) 51%, transparent 52%),
+                linear-gradient(45deg, transparent 48%, rgba(0, 217, 255, 0.02) 49%, rgba(0, 217, 255, 0.02) 51%, transparent 52%);
+            background-size: 
+                80px 80px,
+                80px 80px,
+                40px 40px;
+            background-position: 0 0, 40px 40px, 20px 20px;
+            opacity: 0.4;
+            z-index: 0;
+            pointer-events: none;
+            animation: backgroundMove 25s linear infinite reverse;
         }
         
         /* الأنيميشن */
@@ -56,7 +82,7 @@
                 transform: translate(0, 0);
             }
             to {
-                transform: translate(50px, 50px);
+                transform: translate(80px, 120px);
             }
         }
         
@@ -76,7 +102,7 @@
                     <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                     </svg>
-                    <h1 class="text-3xl font-bold text-white">مرتب فرق تويتش</h1>
+                    <h1 class="text-3xl font-bold text-white">توزيع الفرق</h1>
                 </div>
                 
                 <div class="flex items-center gap-4 flex-wrap">
@@ -178,7 +204,7 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                     </svg>
-                    توزيع عشوائي
+                    توزيع الفرق
                 </button>
 
                 <p class="text-gray-400 text-sm mt-3 text-center">
@@ -218,12 +244,12 @@
         let lobby = [];
 
         const teamNames = {
-            red: 'أحمر',
-            blue: 'أزرق',
-            green: 'أخضر',
-            yellow: 'أصفر',
-            purple: 'بنفسجي',
-            orange: 'برتقالي'
+            red: 'الأحمر',
+            blue: 'الأزرق',
+            green: 'الأخضر',
+            yellow: 'الأصفر',
+            purple: 'البنفسجي',
+            orange: 'البرتقالي'
         };
 
         const teamColors = {
@@ -400,19 +426,25 @@
             // Shuffle lobby only (don't touch existing teams)
             const shuffled = [...lobby].sort(() => Math.random() - 0.5);
             
-            // Count current team sizes to distribute evenly
-            const teamSizes = activeTeams.map(color => teams[color].length);
-            
-            // Distribute lobby members to balance teams
+            // Distribute lobby members randomly while balancing teams
             shuffled.forEach((player) => {
-                // Find team with smallest size
-                let minSize = Math.min(...teamSizes);
-                let targetTeamIndex = teamSizes.indexOf(minSize);
-                let targetTeam = activeTeams[targetTeamIndex];
+                // Get current team sizes
+                const teamSizes = activeTeams.map(color => ({
+                    color: color,
+                    size: teams[color].length
+                }));
+                
+                // Find minimum size
+                const minSize = Math.min(...teamSizes.map(t => t.size));
+                
+                // Get all teams with minimum size
+                const smallestTeams = teamSizes.filter(t => t.size === minSize);
+                
+                // Pick a random team from the smallest teams
+                const randomTeam = smallestTeams[Math.floor(Math.random() * smallestTeams.length)];
                 
                 // Add player to that team
-                teams[targetTeam].push(player);
-                teamSizes[targetTeamIndex]++;
+                teams[randomTeam.color].push(player);
             });
 
             // Clear lobby after distribution
@@ -472,7 +504,7 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                             </svg>
-                            فريق ${teamNames[color]} (${members.length})
+                            الفريق ${teamNames[color]} (${members.length})
                         </h2>
                         <button onclick="clearTeam('${color}')" class="p-2 hover:bg-white/20 rounded-lg transition" title="مسح الفريق">
                             <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
