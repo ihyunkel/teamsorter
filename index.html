@@ -6,12 +6,68 @@
     <title>مرتب فرق تويتش</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* ============================================
+           الخلفية المتحركة - Dark Mode Cyberpunk
+           ============================================ */
+        /* المتغيرات (Colors) */
+        :root {
+            --bg-darker: #0a0e27;
+            --primary-color: #00D9FF;
+            --secondary-color: #FF006E;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-darker);
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* الخلفية المتحركة */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, var(--primary-color) 1px, transparent 1px),
+                radial-gradient(circle at 60% 70%, var(--secondary-color) 1px, transparent 1px),
+                radial-gradient(circle at 80% 20%, var(--primary-color) 1px, transparent 1px),
+                linear-gradient(45deg, rgba(0, 217, 255, 0.02) 25%, transparent 25%),
+                linear-gradient(-45deg, rgba(255, 0, 110, 0.02) 25%, transparent 25%);
+            background-size: 
+                50px 80px,
+                50px 80px,
+                50px 80px,
+                50px 50px,
+                50px 50px;
+            background-position: 0 0, 25px 40px, 12px 20px, 0 0, 25px 25px;
+            opacity: 0.03;
+            z-index: 0;
+            pointer-events: none;
+            animation: backgroundMove 20s linear infinite;
+        }
+        
+        /* الأنيميشن */
+        @keyframes backgroundMove {
+            from {
+                transform: translate(0, 0);
+            }
+            to {
+                transform: translate(50px, 50px);
+            }
+        }
+        
+        /* تأكد أن المحتوى فوق الخلفية */
+        body > * {
+            position: relative;
+            z-index: 1;
         }
     </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-6">
+<body class="min-h-screen p-6">
     <div class="max-w-7xl mx-auto">
         <!-- Header -->
         <div class="bg-gray-800 rounded-lg shadow-xl p-6 mb-6">
